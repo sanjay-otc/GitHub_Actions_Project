@@ -1,78 +1,68 @@
-# Getting Started with Create React App
+Title - Creating a CI/CD Pipeline to "Deploy a React App on GitHub Pages" using GitHub Actions.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Prerequisites - (1) React App Code - It should be working on localhost
+                (2) Basic Knowledge of React and node.js 
+                (3) Basic Knowledge of how CI/CD works and what is the need for this.
 
-<!-- YOUTUBE:START -->
-- [#2 Getting Started with AWS: Create Free AWS Account | AWS Tutorials for Absolute Beginners in Hindi](https://www.youtube.com/watch?v=53nNg7X86yc)
-- [#1 What is AWS? Why to learn? What&#39;s Cloud Computing? | AWS 101 | AWS for Absolute Beginners](https://www.youtube.com/watch?v=S0pHo5rhsxE)
-- [Terraform Dynamic Block Explained with Demo in Hindi | What are Dynamic Blocks in Terraform?](https://www.youtube.com/watch?v=4wGTVBzQYDs)
-- [Data Sources in Terraform | Use terraform data source to fetch aws ami ids  | Terraform Tutorials](https://www.youtube.com/watch?v=_NU3jIwvPGs)
-- [Terraform Local Values Explained | Locals in Terraform | Terraform Tutorials in Hindi](https://www.youtube.com/watch?v=ldK_98oPjMc)
-<!-- YOUTUBE:END -->
+Task - We are going to create a Automatic Workflow to deploy the code from a GitHub Page.
 
-## Available Scripts
+Steps -
 
-In the project directory, you can run:
+      Step 01 : Create a folder and start a react app e.g 'myapp' in it.
+      Step 02 : Clone any react app code from GIT. For this instance i've used "https://github.com/devopsproin/github-actions-crash-course.git"
+      Step 03 : Run the code in vs code and start the server using 'npm start' in terminal.
+      Step 04 : Now the server must be running on localhost:3000
+      Step 05 : Now create a ".github/workflows/deploy.yaml" file and paste this workflow in this.
 
-### `npm start`
+                        name: CI/CD for React App                      // Name of the WorkFlow
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+                        on:                                            // Triggering the Workflow 
+                            push:                                      // Workflow will be triggered on push event on main or master branch
+                                 branches: [main, master]
+                            workflow_dispatch:                         // Workflow can be triggered manaually as well
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+                        permissions:                                   // Permission to write the content in gh-pages branch
+                            contents: write
 
-### `npm test`
+                        jobs:                                          // Job will decide what work will be done in this workflow
+                            build_and_deploy:
+                                runs-on: ubuntu-latest                 // Ubuntu-latest server will be selected to do this job
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+                                steps:
 
-### `npm run build`
+                                    - name: Checkout Repository        // To checkout to the Present Repository where the code is available
+                                      uses: actions/checkout@v3
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+                                    - name: Setup node.js              // To set-up the node environment on the server for this repo
+                                      uses: actions/setup-node@v3
+                                      with:
+                                          node-version: 18             // node-version specified
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+                                    - name: Install Dependencies       // Installing the Dependencies
+                                      run: npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+                                    - name: Build Project              // Building the project in build folder
+                                      run: npm run build
 
-### `npm run eject`
+                                    - name: Deploy to GitHub Pages     // Deploying the code to GitHub Pages in gh-pages branch                   
+                                      uses: JamesIves/github-pages-deploy-action@4.1.0
+                                      with:
+                                          branch: gh-pages
+                                          folder: build
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+      Step 06 : Push the code to GitHub and Check the Actions tab - 'CI/CD for React App' action must be triggered
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+      Step 07 : Now to set the deployement using GitHub Pages.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+                Go to Setting --> Pages --> Deploy from a branch --> select gh-pages and then save.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+                There must be one more action run automatically.
 
-## Learn More
+                It'll provide the Link to access the App.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+     Step 08 : To set the Homepage of the app, go to code --> Package.json --> add  "homepage": "https://sanjay-otc.github.io/react-test-app/",
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+                provide the link given at pages tab in place of "https://sanjay-otc.github.io/react-test-app/"
 
-### Code Splitting
+     Step 09 : Now check the link, code must be running.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
