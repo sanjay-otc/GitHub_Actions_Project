@@ -1,12 +1,12 @@
-Title - Creating a CI/CD Pipeline to "Deploy a React App on GitHub Pages" using GitHub Actions.
+<h1>Title - Creating a CI/CD Pipeline to "Deploy a React App on GitHub Pages" using GitHub Actions</h1>
 
-Prerequisites - (1) React App Code - It should be working on localhost
+<h3>Prerequisites</h3> - (1) React App Code - It should be working on localhost
                 (2) Basic Knowledge of React and node.js 
                 (3) Basic Knowledge of how CI/CD works and what is the need for this.
 
-Task - We are going to create a Automatic Workflow to deploy the code from a GitHub Page.
+<h3>Task</h3> - We are going to create a Automatic Workflow to deploy the code from a GitHub Page.
 
-Steps -
+<h3>Steps</h3> -
 
       Step 01 : Create a folder and start a react app e.g 'myapp' in it.
       Step 02 : Clone any react app code from GIT. For this instance i've used "https://github.com/devopsproin/github-actions-crash-course.git"
